@@ -31,6 +31,24 @@ VALUES
 /*!40000 ALTER TABLE `tb_newbee_mall_admin_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
+## Tables for prawn
+# Dump of table tb_prawn_user
+# ------------------------------------------------------------
+DROP TABLE IF EXISTS `tb_prawn_user`;
+CREATE TABLE `tb_prawn_user` (
+    `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'prawn平台生成的用户id',
+    `open_id` varchar(50) NOT NULL DEFAULT '' COMMENT '各个平台生成的用户id',
+    `name` varchar(32) NOT NULL DEFAULT '' COMMENT '登陆名称',
+    `employee_no` varchar(64) NOT NULL DEFAULT '' COMMENT '员工编号',
+    `mobile` varchar(32) NOT NULL DEFAULT '' COMMENT '手机号',
+    `is_deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT '注销标识字段(0-正常 1-已注销)',
+    `locked_flag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '锁定标识字段(0-未锁定 1-已锁定)',
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+    `platform` tinyint(8) NOT NULL DEFAULT '0' COMMENT '来源平台：钉钉/企业微信',
+    `org_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '组织id',
+    `org_name` varchar(64) NOT NULL DEFAULT '' COMMENT '组织名称',
+    PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 # Dump of table tb_newbee_mall_carousel
 # ------------------------------------------------------------
@@ -1013,9 +1031,3 @@ CREATE TABLE `tb_newbee_mall_admin_user_token` (
   UNIQUE KEY `uq_token` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

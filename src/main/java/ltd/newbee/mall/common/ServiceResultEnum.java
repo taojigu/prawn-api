@@ -65,6 +65,8 @@ public enum ServiceResultEnum {
 
     ORDER_NOT_EXIST_ERROR("订单不存在！"),
 
+    ORDER_ITEM_NOT_EXIST_ERROR("订单项不存在！"),
+
     NULL_ADDRESS_ERROR("地址不能为空！"),
 
     ORDER_PRICE_ERROR("订单价格异常！"),
@@ -78,6 +80,8 @@ public enum ServiceResultEnum {
     SHOPPING_ITEM_COUNT_ERROR("库存不足！"),
 
     ORDER_STATUS_ERROR("订单状态异常！"),
+
+    CLOSE_ORDER_ERROR("关闭订单失败！"),
 
     OPERATE_ERROR("操作失败！"),
 
