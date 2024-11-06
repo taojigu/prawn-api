@@ -1,4 +1,4 @@
-name: Pull Request Merged to Develop
+name: Label to docker develop
 on:
   pull_request:
     types: [labeled]
