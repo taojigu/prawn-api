@@ -1,18 +1,22 @@
+name: Trigger on Label Push
 on:
-  pull_request:
+  push:
+    # Only trigger the action on pushes to tags
+    tags:
+      - 'v*'            # Matches tags like v1, v1.0, v1.0.0
+      - 'release-*'     # Matches tags like release-1.0, release-2.1.0
     branches:
-      - develop
-    types:
-      - closed
+      - 'main'          # Only trigger if the tag is pushed to the main branch
+      - 'develop'       # Or trigger if the tag is pushed to the develop branch
 
-# Later, in the jobs section of your actions.yml file.
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
+  run-on-tag:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -32,3 +36,5 @@ jobs:
           registry: docker.io
           username: ${{secrets.DOCKER_USERNAME}}
           password: ${{secrets.DOCKER_TOKEN}}
+
+
