@@ -1,4 +1,4 @@
-name: Trigger on Label Push
+name: Push develop tag to docker
 on:
   push:
     # Only trigger the action on pushes to tags

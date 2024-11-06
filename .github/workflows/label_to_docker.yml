@@ -1,10 +1,9 @@
 name: Label to docker develop
-
 on:
   pull_request:
     types: [labeled]
-  branch:
-    - develop
+    branch:
+      - develop
 jobs:
   run-on-release-label:
     # This will run only if the target branch matches "develop-1.0.0" pattern
