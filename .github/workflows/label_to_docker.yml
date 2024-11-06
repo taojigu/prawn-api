@@ -1,18 +1,14 @@
-name: Pull Request Merged to Develop
+name: Label to docker develop
+
 on:
   pull_request:
     types: [labeled]
-env:
-  IS_TARGET_BRANCH: ${{ startsWith(github.event.pull_request.base.ref, 'develop-') }}
-  IS_VALID_LABEL: ${{ github.event.label.name == 'release to develop' }}
-
+  branch:
+    - develop
 jobs:
   run-on-release-label:
     # This will run only if the target branch matches "develop-1.0.0" pattern
-    if: |
-      startsWith(github.event.pull_request.base.ref, 'develop-') &&
-      github.event.label.name == 'release to develop'
-
+    if: github.event.label.name == 'release to develop'
     runs-on: ubuntu-latest
 
     steps:
