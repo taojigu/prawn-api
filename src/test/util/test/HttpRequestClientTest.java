@@ -1,16 +1,14 @@
-package ltd.newbee.mall.util;
+package test;
 
 import ltd.newbee.mall.NewBeeMallAPIApplication;
 import ltd.newbee.mall.api.mall.vo.NewBeeMallIndexCategoryVO;
-import org.junit.jupiter.api.BeforeAll;
+import ltd.newbee.mall.util.Result;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
-import test.HttpRequestClient;
 
 import java.util.List;
 
