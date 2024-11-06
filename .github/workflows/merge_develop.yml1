@@ -11,8 +11,7 @@ jobs:
     # This will run only if the target branch matches "develop-1.0.0" pattern
     if: |
       startsWith(github.event.pull_request.base.ref, 'develop-') &&
-      github.event.label.name == 'release to develop' &&
-      github.event.pull_request.merged == true
+      github.event.label.name == 'release to develop'
 
     runs-on: ubuntu-latest
 
