@@ -1,17 +1,24 @@
 name: Pull Request Merged to Develop
 on:
   pull_request:
-    branches: [ "develop" ]
-    types: [closed]
+    types: [labeled]
+env:
+  IS_TARGET_BRANCH: ${{ startsWith(github.event.pull_request.base.ref, 'develop-') }}
+  IS_VALID_LABEL: ${{ github.event.label.name == 'release to develop' }}
 
 jobs:
-  run-on-merge:
-    if: github.event.pull_request.merged == true  # Only run if the PR is merged
+  run-on-release-label:
+    # This will run only if the target branch matches "develop-1.0.0" pattern
+    if: |
+      startsWith(github.event.pull_request.base.ref, 'develop-') &&
+      github.event.label.name == 'release to develop' &&
+      github.event.pull_request.merged == true
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run a script on merge
-        run: echo "Pull request has been merged into the branch!"
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - uses: actions/checkout@v4
       - name: Set up JDK
