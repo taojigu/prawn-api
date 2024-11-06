@@ -31,7 +31,7 @@ import java.util.Map;
 
 @RestController
 @Api(value = "v1", tags = "4.新蜂商城商品相关接口")
-@RequestMapping("/api/v1")
+@RequestMapping("/ltd/newbee/mall/api/v1")
 public class NewBeeMallGoodsAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(NewBeeMallGoodsAPI.class);

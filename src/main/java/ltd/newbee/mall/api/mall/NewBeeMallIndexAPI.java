@@ -28,7 +28,7 @@ import java.util.List;
 
 @RestController
 @Api(value = "v1", tags = "1.新蜂商城首页接口")
-@RequestMapping("/api/v1")
+@RequestMapping("/ltd/newbee/mall/api/v1")
 public class NewBeeMallIndexAPI {
 
     @Resource

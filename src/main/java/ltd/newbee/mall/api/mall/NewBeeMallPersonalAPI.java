@@ -29,7 +29,7 @@ import javax.validation.Valid;
 
 @RestController
 @Api(value = "v1", tags = "2.新蜂商城用户操作相关接口")
-@RequestMapping("/api/v1")
+@RequestMapping("/ltd/newbee/mall/api/v1")
 public class NewBeeMallPersonalAPI {
 
     @Resource
