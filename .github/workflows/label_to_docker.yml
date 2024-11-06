@@ -7,7 +7,8 @@ on:
 jobs:
   run-on-release-label:
     # This will run only if the target branch matches "develop-1.0.0" pattern
-    if: github.event.label.name == 'release to develop'
+    if: github.event.label.name == 'release to develop' && github.event.pull_request.merged == true
+
     runs-on: ubuntu-latest
 
     steps:
