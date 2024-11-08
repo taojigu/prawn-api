@@ -21,7 +21,7 @@ jobs:
 #jobs:
 #  deploy:
 #    #specify run on the self-host runner of github action
-    runs-on: self-host
+    runs-on: self-hosted
     steps:
       - name: Pull the docker image
         run: sudo docker pull jitao1102/prawn-api:latest
