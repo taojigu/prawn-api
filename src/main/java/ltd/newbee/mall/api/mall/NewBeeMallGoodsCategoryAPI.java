@@ -39,6 +39,7 @@ public class NewBeeMallGoodsCategoryAPI {
         if (CollectionUtils.isEmpty(categories)) {
             NewBeeMallException.fail(ServiceResultEnum.DATA_NOT_EXIST.getResult());
         }
-        return ResultGenerator.genSuccessResult(categories);
+        return ResultGenerator.genSuccessResult("TestMessage");
+        //return ResultGenerator.genSuccessResult(categories);
     }
 }
