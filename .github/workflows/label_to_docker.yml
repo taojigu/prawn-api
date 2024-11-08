@@ -7,7 +7,7 @@ on:
 jobs:
   run-on-release-label:
     # This will run only if the target branch matches "develop-1.0.0" pattern
-    if: github.event.label.name == 'release to develop' && github.event.pull_request.merged == true
+    if: github.event.label.name == 'release to develop' # && github.event.pull_request.merged == true
 
     runs-on: ubuntu-latest
 
@@ -26,8 +26,9 @@ jobs:
       - name: Build and Push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
-          image: jitao1102/prawn-api
+          #image: jitao1102/prawn-api
           registry: docker.io
           username: ${{secrets.DOCKER_USERNAME}}
           password: ${{secrets.DOCKER_TOKEN}}
+          tags: jitao1102/prawn-api/app:latest
 
