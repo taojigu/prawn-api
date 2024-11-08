@@ -1,14 +1,26 @@
-name: Deploy to aws test
+#name: Deploy to aws test
+#
+#on:
+#  workflow_run:
+#    workflows: ["Label to docker develop"]
+#    types:
+#      - completed
 
+name: Label to AWS Test
 on:
-  workflow_run:
-    workflows: ["Label to docker develop"]
-    types:
-      - completed
-
+  pull_request:
+    types: [labeled]
+    branch:
+      - 'develop*'
 jobs:
-  deploy:
-    #specify run on the self-host runner of github action
+  cd-aws-test:
+    # This will run only if the target branch matches "develop-1.0.0" pattern
+    if: github.event.label.name == 'cd to aws test' && github.event.pull_request.merged == true
+#    runs-on: ubuntu-latest
+#
+#jobs:
+#  deploy:
+#    #specify run on the self-host runner of github action
     runs-on: self-host
     steps:
       - name: Pull the docker image
