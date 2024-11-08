@@ -51,18 +51,6 @@ public class NewBeeMallGoodsCategoryAPITest  {
 //        sampleCategory.setCategoryId(1L);
 //        sampleCategory.setCategoryName("Sample Category");
     }
-    @Test
-    public void testGetCategoryIndex() throws Exception {
-//        String url = "http://localhost:"+port+"/ltd/newbee/mall/api/v1/categories";
-//        ResponseEntity<List<NewBeeMallIndexCategoryVO>> response = restTemplate.exchange(
-//                url,
-//                HttpMethod.GET,
-//                null,
-//                new ParameterizedTypeReference<List<NewBeeMallIndexCategoryVO>>() {}
-//        );
-//        assertEquals(HttpStatus.OK,response.getStatusCode());
-//        assertTrue(response.getBody().size() > 0);
-    }
 
     @Test
     public void testGetCategoriesSuccess() throws Exception{
