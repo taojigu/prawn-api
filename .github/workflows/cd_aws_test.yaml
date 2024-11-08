@@ -26,7 +26,7 @@ jobs:
       - name: Log messages
         run: echo "it is run"
       - name: Pull the docker image
-        run: sudo docker pull jitao1102/prawn-api:develop-499e158
+        run: sudo docker pull jitao1102/prawn-api:latest
       - name: Remove old docker container
         run: sudo docker rm -f prawn-api-container || True
       - name: Run docker container
