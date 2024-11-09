@@ -40,6 +40,6 @@ public class NewBeeMallGoodsCategoryAPI {
             NewBeeMallException.fail(ServiceResultEnum.DATA_NOT_EXIST.getResult());
         }
 
-        return ResultGenerator.genSuccessResult(categories.subList(0,1));
+        return ResultGenerator.genSuccessResult([]);
     }
 }
