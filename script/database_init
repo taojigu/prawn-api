@@ -1,0 +1,2 @@
+# init db in test
+ mysql -h 13.211.46.96 -p prawn -u prawnWorker -p < src/main/resources/prawn_db_v2_schema.sql
