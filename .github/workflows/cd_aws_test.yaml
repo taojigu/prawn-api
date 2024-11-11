@@ -13,8 +13,18 @@ on:
     branch:
       - 'develop*'
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run_jobs: ${{ github.event.label.name == 'cd to aws test' && github.event.pull_request.merged == true }}
+    steps:
+      - name: Check if jobs should run
+        run:
+          echo "Condition evaluated: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}"
+
   ci-develop-docker:
-    if: github.event.label.name == 'cd to aws test' && github.event.pull_request.merged == true
+    needs: setup
+    if: needs.setup.outputs.should_run_jobs == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -38,11 +48,8 @@ jobs:
           password: ${{secrets.DOCKER_TOKEN}}
   cd-aws-test:
     # This will run only if the target branch matches "develop-1.0.0" pattern
-    if: github.event.pull_request.merged == true
-
-#jobs:
-#  deploy:
-#    #specify run on the self-host runner of github action
+    needs: [setup,ci-develop-docker]
+    if: needs.setup.outputs.should_run_jobs == 'true'
     runs-on: self-hosted
     steps:
       - name: Log messages
