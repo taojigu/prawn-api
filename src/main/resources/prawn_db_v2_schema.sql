@@ -5,6 +5,16 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- mysql -h 13.211.46.96 -p prawn -u prawnWorker -p < src/main/resources/prawn_db_v2_schema.sql
+-- Drop the existing database if it exists
+DROP DATABASE IF EXISTS prawn;
+
+-- Create a new database
+CREATE DATABASE prawn;
+
+-- Use the new database
+USE prawn;
+
 # Dump of table tb_newbee_mall_admin_user
 # ------------------------------------------------------------
 
