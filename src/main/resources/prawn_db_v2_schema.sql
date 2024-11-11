@@ -77,7 +77,7 @@ CREATE TABLE `tb_prawn_product` (
     `title` varchar(50) NOT NULL DEFAULT '' COMMENT '产品标题',
     `description` text NOT NULL  COMMENT '产品描述',
     `price` double NOT NULL DEFAULT '0' COMMENT '价格',
-    `product_image` text NOT NULL DEFAULT ''  COMMENT '多个产品image url',
+    `product_image` text NOT NULL  COMMENT '多个产品image url',
     `product_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '产品销售状态（0-默认，1-编辑中 2-销售中 3-已出售 4-撤销）',
     `keywords` varchar(80) NOT NULL DEFAULT '' COMMENT '产品关键字集合',
     `category_id` bigint(32) NOT NULL DEFAULT '0' COMMENT '产品分类ID',
@@ -1010,7 +1010,6 @@ CREATE TABLE `tb_newbee_mall_order_item` (
   `goods_name` varchar(200) NOT NULL DEFAULT '' COMMENT '下单时商品的名称(订单快照)',
   `goods_cover_img` varchar(200) NOT NULL DEFAULT '' COMMENT '下单时商品的主图(订单快照)',
   `selling_price` int(11) NOT NULL DEFAULT '1' COMMENT '下单时商品的价格(订单快照)',
-  `goods_count` int(11) NOT NULL DEFAULT '1' COMMENT '数量(订单快照)',
   `goods_count` int(11) NOT NULL DEFAULT '1' COMMENT '数量(订单快照)',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`order_item_id`)
