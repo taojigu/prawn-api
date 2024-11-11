@@ -1,6 +1,3 @@
--- ----------------------------
--- Copyright (c) 2019-2021 十三 all rights reserved.
--- ----------------------------
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -44,6 +41,18 @@ UNLOCK TABLES;
 ## Tables for prawn
 # Dump of table tb_prawn_user
 # ------------------------------------------------------------
+DROP TABLE IF EXISTS `tb_prawn_user_token`;
+
+CREATE TABLE `tb_prawn_user_token` (
+  `user_id` bigint(20) NOT NULL COMMENT '用户主键id',
+  `token` varchar(32) NOT NULL COMMENT 'token值(32位字符串)',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `expire_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'token过期时间',
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `uq_token` (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 DROP TABLE IF EXISTS `tb_prawn_user`;
 CREATE TABLE `tb_prawn_user` (
     `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'prawn平台生成的用户id',
@@ -51,6 +60,8 @@ CREATE TABLE `tb_prawn_user` (
     `name` varchar(32) NOT NULL DEFAULT '' COMMENT '登陆名称',
     `employee_no` varchar(64) NOT NULL DEFAULT '' COMMENT '员工编号',
     `mobile` varchar(32) NOT NULL DEFAULT '' COMMENT '手机号',
+    `email` varchar(32) NOT NULL DEFAULT '' COMMENT '电子邮件',
+    `avatar` varchar(128) NOT NULL DEFAULT '' COMMENT '用户头像',
     `is_deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT '注销标识字段(0-正常 1-已注销)',
     `locked_flag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '锁定标识字段(0-未锁定 1-已锁定)',
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
@@ -59,6 +70,63 @@ CREATE TABLE `tb_prawn_user` (
     `org_name` varchar(64) NOT NULL DEFAULT '' COMMENT '组织名称',
     PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+DROP TABLE IF EXISTS `tb_prawn_product`;
+CREATE TABLE `tb_prawn_product` (
+    `product_id` bigint(32) NOT NULL AUTO_INCREMENT COMMENT '产品ID',
+    `title` varchar(50) NOT NULL DEFAULT '' COMMENT '产品标题',
+    `description` text NOT NULL  COMMENT '产品描述',
+    `price` double NOT NULL DEFAULT '0' COMMENT '价格',
+    `product_image` text NOT NULL DEFAULT ''  COMMENT '多个产品image url',
+    `product_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '产品销售状态（0-默认，1-编辑中 2-销售中 3-已出售 4-撤销）',
+    `keywords` varchar(80) NOT NULL DEFAULT '' COMMENT '产品关键字集合',
+    `category_id` bigint(32) NOT NULL DEFAULT '0' COMMENT '产品分类ID',
+    `is_deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT '注销标识字段(0-正常 1-已注销)',
+    `locked_flag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '锁定标识字段(0-未锁定 1-已锁定)',
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+    `seller_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '卖家用户id',
+    `seller_name` varchar(64) NOT NULL DEFAULT '' COMMENT '卖家名字',
+    `org_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '卖家组织id',
+    `org_name` varchar(64) NOT NULL DEFAULT '' COMMENT '卖家组织名称',
+    `seller_employee_no` varchar(64) NOT NULL DEFAULT '' COMMENT '卖家员工编号',
+    PRIMARY KEY (`product_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+DROP TABLE IF EXISTS `tb_prawn_favorite`;
+CREATE TABLE `tb_prawn_favorite` (
+    `favorite_id` bigint(64) NOT NULL AUTO_INCREMENT COMMENT '收藏本身ID',
+    `user_id` bigint(32) NOT NULL DEFAULT '0' COMMENT '收藏的用户Id',
+    `product_id` bigint(32) NOT NULL DEFAULT '0' COMMENT '收藏的产品Id',
+    `is_deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT '注销标识字段(0-正常 1-已注销)',
+    `locked_flag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '锁定标识字段(0-未锁定 1-已锁定)',
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+    PRIMARY KEY (`favorite_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+# 发布产品订单表格
+DROP TABLE IF EXISTS `tb_prawn_publish_product_order`;
+
+CREATE TABLE `tb_prawn_publish_product_order` (
+  `order_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单表主键id',
+  `order_no` varchar(64) NOT NULL DEFAULT '' COMMENT '订单号',
+  `seller_id` bigint(32) NOT NULL DEFAULT '0' COMMENT '用户主键id',
+  `product_id` bigint(32) NOT NULL DEFAULT '0' COMMENT '对应的产品id',
+  `cost` double NOT NULL DEFAULT '0' COMMENT '订单总价',
+  `pay_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '支付状态:0.未支付,1.支付成功,-1:支付失败',
+  `pay_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0.无 1.支付宝支付 2.微信支付',
+  `pay_time` datetime DEFAULT NULL COMMENT '支付时间',
+  `extra_info` varchar(100) NOT NULL DEFAULT '' COMMENT '订单body',
+  `is_deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标识字段(0-未删除 1-已删除)',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最新修改时间',
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
 
 # Dump of table tb_newbee_mall_carousel
 # ------------------------------------------------------------
@@ -942,6 +1010,7 @@ CREATE TABLE `tb_newbee_mall_order_item` (
   `goods_name` varchar(200) NOT NULL DEFAULT '' COMMENT '下单时商品的名称(订单快照)',
   `goods_cover_img` varchar(200) NOT NULL DEFAULT '' COMMENT '下单时商品的主图(订单快照)',
   `selling_price` int(11) NOT NULL DEFAULT '1' COMMENT '下单时商品的价格(订单快照)',
+  `goods_count` int(11) NOT NULL DEFAULT '1' COMMENT '数量(订单快照)',
   `goods_count` int(11) NOT NULL DEFAULT '1' COMMENT '数量(订单快照)',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`order_item_id`)
