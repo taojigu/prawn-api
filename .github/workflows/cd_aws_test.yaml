@@ -19,8 +19,7 @@ jobs:
       should_run_jobs: ${{ github.event.label.name == 'cd to aws test'}} # && github.event.pull_request.merged == true }}
     steps:
       - name: Check if jobs should run
-        run:
-          echo "Condition evaluated: ${{ github.event.label.name == 'cd to aws test' }}"
+        run: echo "Evaluated conditions ..."
 
   ci-develop-docker:
     needs: setup
