@@ -53,10 +53,17 @@ jobs:
     steps:
       - name: Log messages
         run: echo "it is run"
+      - name: Remove old docker container and images
+        run: |
+          REPOSITORY="prawn-api-container"
+          # Step 1: Stop the container
+          docker ps -a --filter "ancestor=$REPOSITORY" --format "{{.ID}}" | xargs -r docker stop
+          # Step 2: Remove the container
+          docker ps -a --filter "ancestor=ancestor=$REPOSITORY" --format "{{.ID}}" | xargs -r docker rm
+          # Setp 3: Remove Images
+          docker images --filter "ancestor=ancestor=$REPOSITORY" --format "{{.ID}}" | xargs -r docker rmi --force
       - name: Pull the docker image
         run: sudo docker pull jitao1102/prawn-api:latest
-      - name: Remove old docker container
-        run: sudo docker rm -f prawn-api-container || True
       - name: Run docker container
         run: sudo docker run -d -p 28019:28019 --name prawn-api-container jitao1102/prawn-api
 
