@@ -1,0 +1,11 @@
+# init db in test
+ mysql -h 13.211.46.96 -p prawn -u prawnWorker -p < src/main/resources/prawn_db_v2_schema.sql
+#restart github runner action
+nohup ./run.sh & disown
+
+curl http://13.211.46.96:28019/ltd/newbee/mall/api/v1/categories
+
+#get docker ip: $ docker inspect -f \
+ '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+ [docker id]
+# update nginx: /etc/nginx/sites-available/default
