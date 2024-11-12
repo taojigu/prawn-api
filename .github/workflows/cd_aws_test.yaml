@@ -55,13 +55,9 @@ jobs:
         run: echo "it is run"
       - name: Remove old docker container and images
         run: |
-          REPOSITORY="prawn-api-container"
-          # Step 1: Stop the container
-          docker ps -a --filter "ancestor=$REPOSITORY" --format "{{.ID}}" | xargs -r docker stop
-          # Step 2: Remove the container
-          docker ps -a --filter "ancestor=ancestor=$REPOSITORY" --format "{{.ID}}" | xargs -r docker rm
-          # Setp 3: Remove Images
-          docker images --filter "ancestor=ancestor=$REPOSITORY" --format "{{.ID}}" | xargs -r docker rmi --force
+          docker ps -a --filter "ancestor=jitao1102/prawn-api" --format "{{.ID}}" | xargs -r docker stop && \
+          docker ps -a --filter "ancestor=jitao1102/prawn-api" --format "{{.ID}}" | xargs -r docker rm && \
+          docker images --filter "reference=jitao1102/prawn-api" --format "{{.ID}}" | xargs -r docker rmi --force
       - name: Pull the docker image
         run: sudo docker pull jitao1102/prawn-api:latest
       - name: Run docker container
