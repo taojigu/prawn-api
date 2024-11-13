@@ -1,0 +1,65 @@
+#name: Deploy to aws test
+#
+#on:
+#  workflow_run:
+#    workflows: ["Label to docker develop"]
+#    types:
+#      - completed
+
+name: ci-docker-and-cd-aws
+on:
+  pull_request:
+    types: [labeled]
+    branch:
+      - 'develop*'
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run_jobs: ${{ github.event.label.name == 'cd to aws test'}} # && github.event.pull_request.merged == true }}
+    steps:
+      - name: Check if jobs should run
+        run: echo "Evaluated conditions ..."
+
+  ci-develop-docker:
+    needs: setup
+    if: needs.setup.outputs.should_run_jobs == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Build and Push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: jitao1102/prawn-api
+          tags: latest
+          registry: docker.io
+          username: ${{secrets.DOCKER_USERNAME}}
+          password: ${{secrets.DOCKER_TOKEN}}
+  cd-aws-test:
+    # This will run only if the target branch matches "develop-1.0.0" pattern
+    needs: [setup,ci-develop-docker]
+    if: needs.setup.outputs.should_run_jobs == 'true'
+    runs-on: self-hosted
+    steps:
+      - name: Log messages
+        run: echo "it is run"
+      - name: Remove old docker container and images
+        run: |
+          docker ps -a --filter "ancestor=jitao1102/prawn-api" --format "{{.ID}}" | xargs -r docker stop && \
+          docker ps -a --filter "ancestor=jitao1102/prawn-api" --format "{{.ID}}" | xargs -r docker rm && \
+          docker images --filter "reference=jitao1102/prawn-api" --format "{{.ID}}" | xargs -r docker rmi --force
+      - name: Pull the docker image
+        run: sudo docker pull jitao1102/prawn-api:latest
+      - name: Run docker container
+        run: sudo docker run -d -p 28019:28019 jitao1102/prawn-api
+

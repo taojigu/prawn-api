@@ -1,0 +1,48 @@
+name: Deploy to EC2 Test
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  release-to-aws-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Build and Push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: jitao1102/prawn-api
+          registry: docker.io
+          username: ${{secrets.DOCKER_USERNAME}}
+          password: ${{secrets.DOCKER_TOKEN}}
+
+      - name: SSH and Deploy on EC2
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            # Stop and remove the current container
+            docker stop my-spring-boot-app || true
+            docker rm my-spring-boot-app || true
+
+            # Pull the latest Docker image from Docker Hub
+            docker pull ${{ secrets.DOCKER_USERNAME }}/my-spring-boot-app:latest
+
+            # Start a new container from the latest image
+            docker run -d --name my-spring-boot-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/my-spring-boot-app:latest
