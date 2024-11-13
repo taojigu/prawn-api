@@ -9,3 +9,4 @@ curl http://13.211.46.96:28019/ltd/newbee/mall/api/v1/categories
  '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
  [docker id]
 # update nginx: /etc/nginx/sites-available/default
+#
