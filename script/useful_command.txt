@@ -1,5 +1,5 @@
 # init db in test
- mysql -h 13.211.46.96 -p prawn -u prawnWorker -p < src/main/resources/prawn_db_v2_schema.sql
+ mysql -h ec2-3-107-74-190.ap-southeast-2.compute.amazonaws.com -p prawn -u prawnWorker -p < src/main/resources/prawn_db_v2_schema.sql
 #restart github runner action
 nohup ./run.sh & disown
 
