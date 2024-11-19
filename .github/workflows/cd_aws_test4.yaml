@@ -38,13 +38,13 @@ jobs:
         run:  mvn clean package -DskipTests --file pom.xml
 
       - name: Copy files to EC2
-          uses: appleboy/scp-action@v0.2.0
-          with:
-            host: ${{ secrets.EC2_HOST }}
-            username: ubuntu
-            key: ${{ secrets.EC2_KEY }}
-            source: "target/*.jar"
-            target: "~/springboot-app/"
+        uses: appleboy/scp-action@v0.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          source: "target/*.jar"
+          target: "~/springboot-app/"
 
       - name: SSH into EC2 and restart service
         uses: appleboy/ssh-action@v0.1.10
