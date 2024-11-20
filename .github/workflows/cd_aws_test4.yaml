@@ -20,39 +20,39 @@ jobs:
     steps:
       - name: Check if jobs should run
         run: echo "Evaluated conditions ..."
-
-  scp-to-ec2:
-    needs: setup
-    if: needs.setup.outputs.should_run_jobs == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '8'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Build with Maven
-        run:  mvn clean package -DskipTests --file pom.xml
-
-      - name: Copy files to EC2
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.TS_EC2_WORKER_NAME}}
-          password: ${{ secretes.TS_EC2_WORKER_PASSWORD }}
-          source: "target/*.jar"
-          target: "~/springboot-app/"
-
-      - name: SSH into EC2 and restart service
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.TS_EC2_WORKER_NAME}}
-          password: ${{ secretes.TS_EC2_WORKER_PASSWORD }}
-          script: |
-            sudo pkill -f 'java -jar'
-            cd ~/springboot-app
-            nohup java -jar *.jar > app.log 2>&1 &
+#
+#  scp-to-ec2:
+#    needs: setup
+#    if: needs.setup.outputs.should_run_jobs == 'true'
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Set up JDK
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '8'
+#          distribution: 'temurin'
+#          cache: maven
+#
+#      - name: Build with Maven
+#        run:  mvn clean package -DskipTests --file pom.xml
+#
+#      - name: Copy files to EC2
+#        uses: appleboy/scp-action@v0.1.7
+#        with:
+#          host: ${{ secrets.EC2_HOST }}
+#          username: ${{ secrets.TS_EC2_WORKER_NAME}}
+#          password: ${{ secretes.TS_EC2_WORKER_PASSWORD }}
+#          source: "target/*.jar"
+#          target: "~/springboot-app/"
+#
+#      - name: SSH into EC2 and restart service
+#        uses: appleboy/ssh-action@v0.1.10
+#        with:
+#          host: ${{ secrets.EC2_HOST }}
+#          username: ${{ secrets.TS_EC2_WORKER_NAME}}
+#          password: ${{ secretes.TS_EC2_WORKER_PASSWORD }}
+#          script: |
+#            sudo pkill -f 'java -jar'
+#            cd ~/springboot-app
+#            nohup java -jar *.jar > app.log 2>&1 &
