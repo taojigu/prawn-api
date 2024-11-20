@@ -3,7 +3,7 @@
 #restart github runner action
 nohup ./run.sh & disown
 
-curl http://13.211.46.96:28019/ltd/newbee/mall/api/v1/categories
+curl http://3.107.74.190:28019/ltd/newbee/mall/api/v1/categories
 
 #get docker ip: $ docker inspect -f \
  '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
