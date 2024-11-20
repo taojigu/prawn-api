@@ -54,4 +54,6 @@ jobs:
           key: ${{ secrets.EC2_KEY}}
           script: |
             cd ~/springboot-app
-            sh script/restart.sh
+            pkill -f java -jar
+            nohup java -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar &
+
