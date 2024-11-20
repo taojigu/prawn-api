@@ -55,4 +55,4 @@ jobs:
           script: |
             sudo pkill -f 'java -jar'
             cd ~/springboot-app
-            nohup java -jar *.jar > app.log 2>&1 &
+            nohup java -jar target/*.jar > app.log 2>&1 &
