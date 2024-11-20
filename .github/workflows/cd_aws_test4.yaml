@@ -30,8 +30,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '8'
-          distribution: 'temurin'
+          java-version: '17'
           cache: maven
 
       - name: Build with Maven
@@ -55,5 +54,5 @@ jobs:
           script: |
             sudo pkill -f 'java -jar'
             cd ~/springboot-app
-            nohup java -jar target/*.jar > app.log 2>&1 &
+            nohup java -jar target/*.jar  &
             disown
