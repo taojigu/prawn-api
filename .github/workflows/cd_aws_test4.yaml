@@ -43,7 +43,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER}}
           key: ${{ secrets.EC2_KEY}}
-          source: "target/*.jar","script/restart.sh"
+          source: "target/*.jar,script/restart.sh"
           target: "~/springboot-app/"
 
       - name: SSH into EC2 and restart service
