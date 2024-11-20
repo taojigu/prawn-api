@@ -56,3 +56,4 @@ jobs:
             sudo pkill -f 'java -jar'
             cd ~/springboot-app
             nohup java -jar target/*.jar > app.log 2>&1 &
+            disown
