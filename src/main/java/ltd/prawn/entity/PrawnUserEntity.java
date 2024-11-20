@@ -3,8 +3,10 @@ package ltd.prawn.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import ltd.prawn.common.PrawnPlatformEnum;
 
 import java.util.Date;
+import java.util.Map;
 
 @Data
 public class PrawnUserEntity {
@@ -18,6 +20,10 @@ public class PrawnUserEntity {
     private String employeeNo;
     // 手机号
     private String mobile;
+    // 电子邮件
+    private String email;
+    //头像图片
+    private String avatar;
 
     private Byte isDeleted;
 
@@ -34,4 +40,31 @@ public class PrawnUserEntity {
 
     //组织名称
     private String orgName;
+
+    public PrawnUserEntity() {
+        this.isDeleted = 0;
+        this.lockedFlag = 0;
+        this.createTime = new Date();
+    }
+
+    static public PrawnUserEntity fromDingDingUser(Map<String,Object> dingUserMap){
+        PrawnUserEntity entity = new PrawnUserEntity();
+        entity.setName(dingUserMap.get("name").toString());
+        entity.setAvatar(dingUserMap.get("avatar").toString());
+        if(dingUserMap.containsKey("email")){
+            entity.setEmail(dingUserMap.get("email").toString());
+        } else{
+            entity.setEmail("");
+        }
+
+        entity.setOpenId(dingUserMap.get("unionid").toString());
+        entity.setMobile(dingUserMap.get("mobile").toString());
+        entity.setPlatform(PrawnPlatformEnum.DingDingEnterprise.getPlatformType());
+        entity.setOrgName("且徐行北京科技有限公司");
+        entity.setOrgId(9900001);
+
+        entity.setEmployeeNo(dingUserMap.get("userid").toString());
+        return entity;
+    }
+
 }

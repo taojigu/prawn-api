@@ -16,8 +16,10 @@ package ltd.newbee.mall.common;
  * @apiNote 常量配置
  */
 public class Constants {
-    //public final static String FILE_UPLOAD_DIC = "/opt/newbee/upload/";//上传文件的默认url前缀，根据部署设置自行修改
-    public final static String FILE_UPLOAD_DIC = "D:\\upload\\";//上传文件的默认url前缀，根据部署设置自行修改
+    public final static String FILE_UPLOAD_DIC = "/opt/prawn_upload/";//上传文件的默认url前缀，根据部署设置自行修改
+    //public final static String FILE_UPLOAD_DIC = "/Users/macboss/Documents/imageServe/";//上传文件的默认url前缀，根据部署设置自行修改
+
+
 
     public final static int INDEX_CAROUSEL_NUMBER = 5;//首页轮播图数量(可根据自身需求修改)
 
@@ -35,7 +37,7 @@ public class Constants {
 
     public final static int SHOPPING_CART_PAGE_LIMIT = 5;//购物车分页的默认条数(每页5条)
 
-    public final static int ORDER_SEARCH_PAGE_LIMIT = 5;//我的订单列表分页的默认条数(每页5条)
+    public final static int ORDER_SEARCH_PAGE_LIMIT = 20;//我的订单列表分页的默认条数(每页5条)
 
     public final static int SELL_STATUS_UP = 0;//商品上架状态
     public final static int SELL_STATUS_DOWN = 1;//商品下架状态
@@ -43,4 +45,10 @@ public class Constants {
     public final static int TOKEN_LENGTH = 32;//token字段长度
 
     public final static String USER_INTRO = "随新所欲，蜂富多彩";//默认简介
+
+    public static String getImageURL(String fileName) {
+        return "http://"+ serviceDomain+":8801"+"/images/"+fileName;
+    }
+
+    public static String serviceDomain = "119.45.213.124";
 }

@@ -38,6 +38,7 @@ public class ResultGenerator {
         return result;
     }
 
+
     public static Result genFailResult(String message) {
         Result result = new Result();
         result.setResultCode(RESULT_CODE_SERVER_ERROR);

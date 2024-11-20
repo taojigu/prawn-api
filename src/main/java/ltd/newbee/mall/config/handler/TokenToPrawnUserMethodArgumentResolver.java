@@ -6,19 +6,15 @@
  * Copyright (c) 2019-2021 十三 all rights reserved.
  * 版权所有，侵权必究！
  */
-package ltd.prawn.config;
+package ltd.newbee.mall.config.handler;
+import ltd.lib.DebugConfig;
 
-import ltd.newbee.mall.common.Constants;
-import ltd.newbee.mall.common.NewBeeMallException;
-import ltd.newbee.mall.common.ServiceResultEnum;
-import ltd.newbee.mall.config.annotation.TokenToMallUser;
-import ltd.newbee.mall.entity.MallUser;
-import ltd.prawn.common.PrawnPlatformEnum;
 import ltd.prawn.dao.PrawnUserMapper;
 import ltd.prawn.entity.PrawnUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -26,43 +22,38 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class TokenToPrawnUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
-    private  PrawnUserMapper prawnUserMapper;
+    private PrawnUserTokenService userTokenService;
+
+    @Autowired
+    private PrawnUserMapper userMapper;
 
     public TokenToPrawnUserMethodArgumentResolver() {
     }
 
     public boolean supportsParameter(MethodParameter parameter) {
-        if (parameter.hasParameterAnnotation(TokenToMallUser.class)) {
+        if (parameter.hasParameterAnnotation(TokenToPrawnUser.class)) {
             return true;
         }
         return false;
     }
 
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (parameter.getParameterAnnotation(TokenToMallUser.class) instanceof TokenToMallUser) {
-            MallUser mallUser = null;
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory){
+
+        if (parameter.getParameterAnnotation(TokenToPrawnUser.class) instanceof TokenToPrawnUser) {
             String token = webRequest.getHeader("token");
-            String platformType = webRequest.getHeader("platform");
-            int pt = PrawnPlatformEnum.DingDingEnterprise.getPlatformType();
-            if (platformType.equals(String.valueOf(pt))) {
-                // 根据token换算出钉钉用户信息
-                Map<String,Object> dingUser = new HashMap <String,Object>();
-                String openId = "dingding12345";
-                // 查看钉钉信息是否在数据库中
-                PrawnUserEntity userEntity = this.prawnUserMapper.selectByOpenId(openId);
-                if (null == userEntity) {
-                    userEntity = new PrawnUserEntity();
-                    this.prawnUserMapper.insert(userEntity);
-                }
-                return userEntity;
+            if (true == DebugConfig.TOKEN_DEBUG &&
+                    (this.isFakeToken(token) ||this.isUndefinedToken(token))){
+                Long userId = this.fakeUserIdFromInvalidateToken(token);
+                return this.userMapper.selectByPrimaryKey(userId);
             }
+
+            PrawnUserEntity userEntity = this.userTokenService.selectUserByToken(token);
+            return userEntity;
         }
         return null;
     }
@@ -83,6 +74,22 @@ public class TokenToPrawnUserMethodArgumentResolver implements HandlerMethodArgu
             i += readlen;
         }
         return buffer;
+    }
+    private boolean isUndefinedToken(String token){
+        return StringUtils.isEmpty(token) || token.equalsIgnoreCase("18310067970")
+                || token.equalsIgnoreCase("null") ;
+    }
+    private boolean isFakeToken(String token) {
+        return token.equalsIgnoreCase("123456") ;
+    }
+    private Long fakeUserIdFromInvalidateToken(String token) {
+        if(this.isFakeToken(token)){
+            return Long.valueOf(3);
+        }
+        if (this.isUndefinedToken(token)){
+            return Long.valueOf(2);
+        }
+        return null;
     }
 
 }
