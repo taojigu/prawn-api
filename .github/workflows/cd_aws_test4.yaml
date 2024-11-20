@@ -50,8 +50,8 @@ jobs:
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_KEY }}
+          username: ${{ secrets.TS_EC2_WORKER_NAME}}
+          password: ${{ secretes.TS_EC2_WORKER_PASSWORD }}
           script: |
             sudo pkill -f 'java -jar'
             cd ~/springboot-app
