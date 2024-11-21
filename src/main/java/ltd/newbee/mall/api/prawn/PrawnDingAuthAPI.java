@@ -81,7 +81,7 @@ public class PrawnDingAuthAPI {
         if (StringUtils.isEmpty(prawnToken)){
             return ResultGenerator.genFailResult("登录钉钉失败");
         }
-        return ResultGenerator.genSuccessResultData(prawnToken);
+        return ResultGenerator.genSuccessResult(prawnToken);
     }
 
 

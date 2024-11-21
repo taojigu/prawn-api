@@ -52,14 +52,14 @@ public class PrawnProductAPI {
                 return ResultGenerator.genErrorResult(PrawnProductResultCode.ProductDuplicated,"插入产品失败");
             } else{
                 // 获取最新的userId的entity
-                return ResultGenerator.genSuccessResultData(entity);
+                return ResultGenerator.genSuccessResult(entity);
             }
         } else {
             int updateResult = this.productMapper.updateProduct(entity);
             if ( 0== updateResult){
                 return ResultGenerator.genFailResult("更新产品失败");
             }
-            return ResultGenerator.genSuccessResultData(entity);
+            return ResultGenerator.genSuccessResult(entity);
         }
     }
 

@@ -56,7 +56,7 @@ public class PrawnPublishOrderAPI {
         }
         //ppe.setProductStatus(PrawnProductStatusEnum.PrawnProductStatusOnSale.getStatusCode());
         //this.productMapper.updateProduct(ppe);
-        //return ResultGenerator.genSuccessResultData(ppe);
+        //return ResultGenerator.genSuccessResult(ppe);
         //需要支付，生成订单信息，然后返回调用支付宝的H5 url
 
          //生成新的订单，并且保存，调用支付宝或者微信支付
@@ -110,7 +110,7 @@ public class PrawnPublishOrderAPI {
         if(response.isSuccess()){
             System.out.println("调用成功");
             String bodyString = response.getBody();
-            return ResultGenerator.genSuccessResultData(bodyString);
+            return ResultGenerator.genSuccessResult(bodyString);
         } else {
             System.out.println("调用失败");
             return ResultGenerator.genFailResult(response.getMsg());

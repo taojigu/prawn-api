@@ -9,6 +9,8 @@
 package ltd.newbee.mall.config.handler;
 import ltd.lib.DebugConfig;
 
+import ltd.newbee.mall.service.PrawnUserTokenService;
+import ltd.prawn.config.annotation.TokenToPrawnUser;
 import ltd.prawn.dao.PrawnUserMapper;
 import ltd.prawn.entity.PrawnUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;

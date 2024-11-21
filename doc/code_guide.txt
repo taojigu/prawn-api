@@ -2,3 +2,9 @@
 ### Account
 NeeBeeMallWebMvcConfigurer : addArgumentResolvers
 
+#### Alipay:
+createPublishProductOrder
+
+##Image upload
+PrawnUploadAPI
+

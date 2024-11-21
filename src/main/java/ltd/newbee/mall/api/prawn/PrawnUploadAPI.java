@@ -76,7 +76,7 @@ public class PrawnUploadAPI {
             Map<String, String> map = new HashMap<>();
             map.put("fileName", originalfileName);
             map.put("url", url);
-            Result resultSuccess = ResultGenerator.genSuccessResultData(map);
+            Result resultSuccess = ResultGenerator.genSuccessResult(map);
             return resultSuccess;
 
         } catch (Exception e) {

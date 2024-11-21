@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.prawn.dao.PrawnHomeMapper">
+    <resultMap id="BaseResultMap" type="ltd.prawn.entity.PrawnHomeProductEntity">
+        <id column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="product_image" jdbcType="VARCHAR" property="productImage"/>
+        <result column="keywords" jdbcType="VARCHAR" property="keyWords"/>
+        <result column="productStatus" jdbcType="TINYINT" property="product_status"/>
+        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="locked_flag" jdbcType="TINYINT" property="lockedFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="seller_id" jdbcType="BIGINT" property="sellerId"/>
+        <result column="seller_name" jdbcType="VARCHAR" property="sellerName"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="seller_employee_no" jdbcType="VARCHAR" property="sellerEmployeeNo"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        product_id, title, description, price,product_image, product_status, keywords,category_id,is_deleted,
+        locked_flag, create_time,update_time,seller_id,seller_name,org_id,org_name,seller_employee_no
+    </sql>
+
+    <select id="getTotalHomeProductCount" parameterType="Map" resultType="int">
+        select count(*) from tb_prawn_product
+        <where>
+            <if test="userId!=null and userId!=''">
+                and seller_id = #{userId}
+            </if>
+            <if test="orgId!=null and orgId!=''">
+                and org_id = #{org_id}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="getHomeProductList" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_prawn_product
+        <where>
+            <if test="userId!=null and userId!=''">
+                seller_id != #{userId}
+            </if>
+            <if test="orgId!=null and orgId!=''">
+                and org_id = #{org_id}
+            </if>
+            <if test="product_status!=null and orgId!=''">
+                and product_status = 3
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+</mapper>
