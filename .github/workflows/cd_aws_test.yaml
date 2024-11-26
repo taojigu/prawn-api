@@ -55,5 +55,5 @@ jobs:
           script: |
             cd ~/springboot-app
             pkill -f java -jar
-            nohup java -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar &
+            nohup java -Dspring.profiles.active=test -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar &
 
