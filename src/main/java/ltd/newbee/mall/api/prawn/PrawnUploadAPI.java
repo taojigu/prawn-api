@@ -11,15 +11,14 @@ import com.qcloud.cos.region.Region;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import ltd.newbee.mall.common.Constants;
-import ltd.newbee.mall.util.NewBeeMallUtils;
-import ltd.newbee.mall.util.Result;
-import ltd.newbee.mall.util.ResultGenerator;
+import ltd.newbee.mall.util.*;
 import ltd.prawn.config.annotation.TokenToPrawnUser;
 import ltd.prawn.entity.PrawnUserEntity;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,57 +43,22 @@ public class PrawnUploadAPI {
     @Autowired
     private StandardServletMultipartResolver standardServletMultipartResolver;
 
-    @Value("${spring.tengxun.SecretId}")
-    private String secretId;
-    @Value("${spring.tengxun.SecretKey}")
-    private String secretKey;
-    @Value("${spring.tengxun.region}")
-    private String region;
-    @Value("${spring.tengxun.bucketName}")
-    private String bucketName;
-    @Value("${spring.tengxun.url}")
-    private String path;
-
-    /**
-     * 图片上传
-     */
-    @RequestMapping(value = "prawn/upload/image", method = RequestMethod.POST)
-    @ApiOperation(value = "单图上传", notes = "file Name \"file\"")
-    public Result uploadImage(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file, @TokenToPrawnUser PrawnUserEntity prawnUserEntity) throws URISyntaxException, IOException {
-        COSClient cosClient = initCOSClient();
-        try {
-
-            String originalfileName = file.getOriginalFilename();
-            // 获得文件流
-            InputStream inputStream = file.getInputStream();
-            //设置文件key
-            String filePath = getFileKey(originalfileName);
-            // 上传文件
-            cosClient.putObject(new PutObjectRequest(bucketName, filePath, inputStream, null));
-            cosClient.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);
-            String url = path + "/" + filePath;
-            Map<String, String> map = new HashMap<>();
-            map.put("fileName", originalfileName);
-            map.put("url", url);
-            Result resultSuccess = ResultGenerator.genSuccessResult(map);
-            return resultSuccess;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            cosClient.shutdown();
+    @RequestMapping(value = "prawn/aws/upload/image", method = RequestMethod.POST)
+    @ApiOperation(value = "AWS单图上传", notes = "file Name \"file\"")
+    public Result awsUploadImage(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file, @TokenToPrawnUser PrawnUserEntity prawnUserEntity) throws URISyntaxException, IOException{
+        if (file.isEmpty()) {
+            return ResultGenerator.genFailResult("image file is empty");
         }
 
-        return ResultGenerator.genFailResult("Failed to upload image");
-    }
-
-    private COSClient initCOSClient() {
-        COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
-        Region region = new Region(this.region);
-        ClientConfig clientConfig = new ClientConfig(region);
-        // 生成 cos 客户端。
-        COSClient cosClient = new COSClient(cred, clientConfig);
-        return cosClient;
+        String filePath = file.getOriginalFilename();
+        String key = "product_"+getFileKey(filePath);
+        String bucketName = "prawn-image-bucket1";
+        String imageUrl = S3ImageUploader.uploadImageToS3(bucketName,file,key);
+        if (StringUtils.hasLength(imageUrl)){
+            return ResultGenerator.genSuccessResult(imageUrl);
+        } else {
+            return ResultGenerator.genFailResult("Aws upload image failed");
+        }
     }
 
     /**

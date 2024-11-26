@@ -19,7 +19,7 @@ public class ResultGenerator {
         return result;
     }
 
-    public static Result genSuccessResult(String message) {
+    public static Result genSuccessResultMessage(String message) {
         Result result = new Result();
         result.setResultCode(RESULT_CODE_SUCCESS);
         result.setMessage(message);

@@ -51,5 +51,5 @@ public class Constants {
     }
 
     public static String serviceDomain = "119.45.213.124";
-    public static String servicePort = "9001";
+
 }

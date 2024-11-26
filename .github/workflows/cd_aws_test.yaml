@@ -20,6 +20,14 @@ jobs:
     steps:
       - name: Check if jobs should run
         run: echo "Evaluated conditions ..."
+      - name: Config AWS
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.API_TEST_AWS_ACCEESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.API_TEST_AWS_ACCESS_SECRET_KEY }}
+          run: |
+            echo "Using AWS credentials"
+            echo $AWS_ACCESS_KEY_ID
+
 
   scp-to-ec2:
     needs: setup
@@ -30,7 +38,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '8'
+          java-version: '17'
           distribution: 'temurin'
           cache: maven
 
