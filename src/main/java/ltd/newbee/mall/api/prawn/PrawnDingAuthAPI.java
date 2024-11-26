@@ -2,7 +2,7 @@ package ltd.newbee.mall.api.prawn;
 
 import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
-import ltd.lib.HttpClientUtil;
+import ltd.newbee.mall.lib.HttpClientUtil;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.service.PrawnUserTokenService;
 import ltd.newbee.mall.util.DdConfigSign;

@@ -14,3 +14,7 @@ PrawnUploadAPI
 ## DingDing Auth
 PrawnDingAuthAPI
 
+## Deploy
+java -Dspring.profiles.active=dev -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar
+
+

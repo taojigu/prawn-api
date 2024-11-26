@@ -7,9 +7,9 @@
  * 版权所有，侵权必究！
  */
 package ltd.newbee.mall.config.handler;
-import ltd.lib.DebugConfig;
 
 import ltd.newbee.mall.service.PrawnUserTokenService;
+import ltd.newbee.mall.util.EnvironmentJudge;
 import ltd.prawn.config.annotation.TokenToPrawnUser;
 import ltd.prawn.dao.PrawnUserMapper;
 import ltd.prawn.entity.PrawnUserEntity;
@@ -34,6 +34,9 @@ public class TokenToPrawnUserMethodArgumentResolver implements HandlerMethodArgu
     @Autowired
     private PrawnUserMapper userMapper;
 
+    @Autowired
+    private EnvironmentJudge environmentJudge;
+
     public TokenToPrawnUserMethodArgumentResolver() {
     }
 
@@ -48,8 +51,8 @@ public class TokenToPrawnUserMethodArgumentResolver implements HandlerMethodArgu
 
         if (parameter.getParameterAnnotation(TokenToPrawnUser.class) instanceof TokenToPrawnUser) {
             String token = webRequest.getHeader("token");
-            if (true == DebugConfig.TOKEN_DEBUG &&
-                    (this.isFakeToken(token) ||this.isUndefinedToken(token))){
+            if ( environmentJudge.isDev() &&
+             (this.isFakeToken(token) ||this.isUndefinedToken(token))) {
                 Long userId = this.fakeUserIdFromInvalidateToken(token);
                 return this.userMapper.selectByPrimaryKey(userId);
             }
@@ -86,7 +89,7 @@ public class TokenToPrawnUserMethodArgumentResolver implements HandlerMethodArgu
     }
     private Long fakeUserIdFromInvalidateToken(String token) {
         if(this.isFakeToken(token)){
-            return Long.valueOf(3);
+            return Long.valueOf(1);
         }
         if (this.isUndefinedToken(token)){
             return Long.valueOf(2);

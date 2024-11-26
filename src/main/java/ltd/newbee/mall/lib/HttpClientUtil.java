@@ -1,4 +1,4 @@
-package ltd.lib;
+package ltd.newbee.mall.lib;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
