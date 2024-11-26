@@ -9,6 +9,7 @@ import ltd.newbee.mall.util.DdConfigSign;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
 import ltd.newbee.mall.util.StringUtil;
+import ltd.prawn.common.PrawnMallException;
 import ltd.prawn.config.annotation.TokenToPrawnUser;
 import ltd.prawn.dao.PrawnUserMapper;
 import ltd.prawn.entity.PrawnUserEntity;
@@ -59,6 +60,7 @@ public class PrawnDingAuthAPI {
     }
 
     @GetMapping("prawn/ding/token")
+    //dingding auth code from:https://open-dev.dingtalk.com/apiExplorer?spm=ding_open_doc.document.0.0.673539b7a86KKk#/jsapi?api=runtime.permission.requestAuthCode
     public Result<String> getTokenFromDing(@RequestParam("code") String code) throws Exception {
         // 请求DingToken
         String dingToken = requestDingToken();
@@ -110,12 +112,13 @@ public class PrawnDingAuthAPI {
         Map<String,String> param = new HashMap<String,String>();
         param.put("code",code);
         String resultString = HttpClientUtil.doPost(url,param);
-        if(StringUtils.isEmpty(resultString)){
-            return null;
+        if(!StringUtils.hasLength(resultString)){
+            throw new PrawnMallException("Request Ding UserInfo failed");
         }
+
         Map<String ,Object> resultMap = JSON.parseObject(resultString);
         if (!isSuccessResult(resultMap)){
-            return null;
+            throw new PrawnMallException("Code is not valid");
         }
         return  (Map<String, Object>) resultMap.get("result");
     }
