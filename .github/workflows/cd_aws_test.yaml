@@ -64,6 +64,6 @@ jobs:
           script: |
             cd ~/springboot-app
             pkill -f java -jar
-            sh script/restart.sh
-            ## nohup java -Dspring.profiles.active=dev -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar &
+            sh script/restart.sh dev
+
 
