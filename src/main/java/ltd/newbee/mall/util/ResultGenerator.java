@@ -5,10 +5,6 @@ import org.springframework.util.StringUtils;
 /**
  * 响应结果生成工具
  *
- * @author 13
- * @qq交流群 796794009
- * @email 2449207463@qq.com
- * @link https://github.com/newbee-ltd
  */
 public class ResultGenerator {
     private static final String DEFAULT_SUCCESS_MESSAGE = "SUCCESS";
@@ -23,7 +19,7 @@ public class ResultGenerator {
         return result;
     }
 
-    public static Result genSuccessResult(String message) {
+    public static Result genSuccessResultMessage(String message) {
         Result result = new Result();
         result.setResultCode(RESULT_CODE_SUCCESS);
         result.setMessage(message);

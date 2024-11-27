@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.prawn.dao.PrawnPublishProductOrderMapper">
+    <resultMap id="BaseResultMap" type="ltd.prawn.entity.PrawnPublishOrderEntity">
+        <id column="order_id" jdbcType="BIGINT" property="orderId"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="seller_id" jdbcType="BIGINT" property="sellerId"/>
+        <result column="cost" jdbcType="DOUBLE" property="cost"/>
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime"/>
+        <result column="extra_info" jdbcType="VARCHAR" property="extraInfo"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        order_id, order_no, product_id, seller_id, cost,pay_status,pay_type, pay_time,
+        extra_info, is_deleted,create_time,update_time
+    </sql>
+
+    <select id="selectByProductId"  parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_prawn_publish_product_order
+        where product_id = #{productId,jdbcType=BIGINT} and is_deleted=0
+    </select>
+
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="orderId" parameterType="ltd.prawn.entity.PrawnPublishOrderEntity">
+        insert into tb_prawn_publish_product_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="sellerId != null">
+                seller_id,
+            </if>
+            <if test="cost != null">
+                cost,
+            </if>
+            <if test="payStatus != null">
+                pay_status,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+            <if test="payTime != null">
+                pay_time,
+            </if>
+            <if test="extraInfo != null">
+                extra_info,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="productId != null">
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="sellerId != null">
+                #{sellerId,jdbcType=BIGINT},
+            </if>
+            <if test="cost != null">
+                #{cost,jdbcType=DOUBLE},
+            </if>
+            <if test="payStatus != null">
+                #{payStatus,jdbcType=TINYINT},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=TINYINT},
+            </if>
+            <if test="payTime != null">
+                #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="extraInfo != null">
+                #{extraInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

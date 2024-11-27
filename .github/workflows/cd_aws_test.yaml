@@ -9,7 +9,7 @@
 name: direct-to-ec2
 on:
   pull_request:
-    types: [labeled]
+    types: [ labeled ]
     branch:
       - 'develop*'
 jobs:
@@ -17,9 +17,18 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_run_jobs: ${{ github.event.label.name == 'cd to aws test'}} # && github.event.pull_request.merged == true }}
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.API_TEST_AWS_ACCEESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.API_TEST_AWS_ACCESS_SECRET_KEY }}
     steps:
       - name: Check if jobs should run
         run: echo "Evaluated conditions ..."
+
+      - name: Config AWS
+        run: |
+          echo "Using AWS credentials"
+          echo $AWS_ACCESS_KEY_ID
+          echo $AWS_SECRET_ACCESS_KEY
 
   scp-to-ec2:
     needs: setup
@@ -30,12 +39,12 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '8'
+          java-version: '17'
           distribution: 'temurin'
           cache: maven
 
       - name: Build with Maven
-        run:  mvn clean package -DskipTests --file pom.xml
+        run: mvn clean package -DskipTests --file pom.xml
 
       - name: Copy files to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -55,5 +64,6 @@ jobs:
           script: |
             cd ~/springboot-app
             pkill -f java -jar
-            nohup java -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar &
+            sh script/restart.sh dev
+
 

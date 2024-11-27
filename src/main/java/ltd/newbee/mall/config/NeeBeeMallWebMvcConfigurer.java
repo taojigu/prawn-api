@@ -11,6 +11,7 @@ package ltd.newbee.mall.config;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.config.handler.TokenToAdminUserMethodArgumentResolver;
 import ltd.newbee.mall.config.handler.TokenToMallUserMethodArgumentResolver;
+import ltd.newbee.mall.config.handler.TokenToPrawnUserMethodArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -27,14 +28,17 @@ public class NeeBeeMallWebMvcConfigurer extends WebMvcConfigurationSupport {
     private TokenToMallUserMethodArgumentResolver tokenToMallUserMethodArgumentResolver;
     @Autowired
     private TokenToAdminUserMethodArgumentResolver tokenToAdminUserMethodArgumentResolver;
+    @Autowired
+    private TokenToPrawnUserMethodArgumentResolver tokenToPrawnUserMethodArgumentResolver;
 
     /**
      * @param argumentResolvers
      * @tip @TokenToMallUser @TokenToAdminUser 注解处理方法
      */
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(tokenToMallUserMethodArgumentResolver);
-        argumentResolvers.add(tokenToAdminUserMethodArgumentResolver);
+        //argumentResolvers.add(tokenToMallUserMethodArgumentResolver);
+        //argumentResolvers.add(tokenToAdminUserMethodArgumentResolver);
+        argumentResolvers.add(tokenToPrawnUserMethodArgumentResolver);
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -1,0 +1,24 @@
+### Config
+api port:9000
+web port:5000
+
+### Account
+NeeBeeMallWebMvcConfigurer : addArgumentResolvers
+
+#### Alipay:
+createPublishProductOrder
+
+##Image upload
+PrawnUploadAPI
+
+## DingDing Auth
+PrawnDingAuthAPI
+
+## Deploy
+java -Dspring.profiles.active=dev -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar
+
+
+## Bucket
+AWS AccessKey:AKIA2CUNLGJWABMRJ3FQ
+Secret AccessKey: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
+
