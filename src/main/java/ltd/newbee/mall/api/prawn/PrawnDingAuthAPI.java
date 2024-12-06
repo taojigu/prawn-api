@@ -14,11 +14,9 @@ import ltd.prawn.config.annotation.TokenToPrawnUser;
 import ltd.prawn.dao.PrawnUserMapper;
 import ltd.prawn.entity.PrawnUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +33,8 @@ public class PrawnDingAuthAPI {
     private PrawnUserTokenService userTokenService;
     private String corpId = "dingdfd635d844dc249df5bf40eda33b7ba0";
     private String agentId = "1347471188";
+    @Value("${web.base.url}")
+    private  String webBaseUrl;
 
     @GetMapping("prawn/ding/auth/signature")
     public Result getDingAuthSignature(@TokenToPrawnUser PrawnUserEntity loginMallUser) throws Exception {
@@ -45,7 +45,7 @@ public class PrawnDingAuthAPI {
             return ResultGenerator.genFailResult("TicketFailed");
         }
         long  timestamp=  System.currentTimeMillis()/1000;//1414588745;
-        String url = "http://"+ Constants.serviceDomain +":9002";
+        String url = this.webBaseUrl;
         String signature = DdConfigSign.sign(ticket,noncestr,timestamp,url);
         HashMap<String,Object> result = new HashMap<String,Object>();
         result.put("url",url);
