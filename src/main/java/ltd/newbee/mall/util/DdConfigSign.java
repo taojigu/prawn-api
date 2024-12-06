@@ -23,7 +23,7 @@ public class DdConfigSign {
      */
     public static String sign(String jsticket, String nonceStr, long timeStamp, String url) throws Exception {
         String plain = "jsapi_ticket=" + jsticket + "&noncestr=" + nonceStr + "&timestamp=" + String.valueOf(timeStamp)
-                + "&url=" + url;
+                + "&url=" + decodeUrl(url);
         try {
             MessageDigest sha1 = MessageDigest.getInstance("SHA-256");
             sha1.reset();
