@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.prawn.dao.PrawnProductMapper">
+    <resultMap id="BaseResultMap" type="ltd.prawn.entity.PrawnProductEntity">
+        <id column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="product_image" jdbcType="VARCHAR" property="productImage"/>
+        <result column="keywords" jdbcType="VARCHAR" property="keyWords"/>
+        <result column="product_status" jdbcType="TINYINT" property="productStatus"/>
+        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="locked_flag" jdbcType="TINYINT" property="lockedFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="seller_id" jdbcType="BIGINT" property="sellerId"/>
+        <result column="seller_name" jdbcType="VARCHAR" property="sellerName"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="seller_employee_no" jdbcType="VARCHAR" property="sellerEmployeeNo"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        product_id, title, description, price,product_image, product_status, keywords,category_id,is_deleted,
+        locked_flag, create_time,update_time,seller_id,seller_name,org_id,org_name,seller_employee_no
+    </sql>
+
+
+    <select id="selectByProductId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_prawn_product
+        where product_id = #{productId,jdbcType=BIGINT} and is_deleted=0
+    </select>
+
+    <select id="selectByPrimaryKeys" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_prawn_product
+        where product_id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        order by field(product_id,
+        <foreach item="id" collection="list" separator=",">
+            #{id}
+        </foreach>
+        );
+    </select>
+
+    <update id="updateProduct" parameterType="ltd.prawn.entity.PrawnProductEntity">
+        update tb_prawn_product
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="productImage != null">
+                product_image = #{productImage,jdbcType=VARCHAR},
+            </if>
+            <if test="productStatus != null">
+                product_status = #{productStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=TINYINT},
+            </if>
+            update_time = now()
+        </set>
+
+        where product_id = #{productId,jdbcType=BIGINT}
+    </update>
+
+
+    <insert id="insertProduct"  useGeneratedKeys="true" keyProperty="productId" parameterType="ltd.prawn.entity.PrawnUserEntity">
+        insert into tb_prawn_product (product_id, title, description, price,product_image,
+        product_status, keywords,category_id,is_deleted,
+        locked_flag, create_time,update_time,seller_id,seller_name,org_id,org_name,seller_employee_no
+        )
+        values (#{productId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+        #{price,jdbcType=DOUBLE}, #{productImage,jdbcType=VARCHAR},
+        #{productStatus,jdbcType=TINYINT},#{keyWords,jdbcType=VARCHAR},#{categoryId,jdbcType=BIGINT},
+        #{isDeleted,jdbcType=TINYINT}, #{lockedFlag,jdbcType=TINYINT},
+        now(),
+        now(),#{sellerId,jdbcType=BIGINT},#{sellerName,jdbcType=VARCHAR},
+        #{orgId,jdbcType=BIGINT},#{orgName,jdbcType=VARCHAR},#{sellerEmployeeNo,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="getUserProductTotalCount" resultType="int">
+        select count(*)
+        from tb_prawn_product
+        where seller_id = #{userId,jdbcType=BIGINT} and is_deleted=0
+        <if test="productStatus != null">
+            and product_status = #{productStatus,jdbcType=TINYINT}
+        </if>
+    </select>
+
+    <select id="getUserProductPage" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_prawn_product
+        where seller_id=#{userId,jdbcType=BIGINT} and  is_deleted=0
+        <if test="productStatus != null">
+            and product_status = #{productStatus,jdbcType=TINYINT}
+        </if>
+        order by update_time desc
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
+
+
+</mapper>

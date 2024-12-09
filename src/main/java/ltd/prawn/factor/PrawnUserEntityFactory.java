@@ -4,9 +4,10 @@ import ltd.prawn.common.PrawnPlatformEnum;
 import ltd.prawn.entity.PrawnUserEntity;
 
 public class PrawnUserEntityFactory {
-    static PrawnUserEntity fakeUser1 (String openId) {
+    static public PrawnUserEntity fakeUser1 (String openId) {
         PrawnUserEntity userEntity = new PrawnUserEntity();
         Long userId = PrawnFactoryUtil.getPositiveLong(10000)+10086;
+        userEntity.setOpenId(openId);
         userEntity.setUserId(userId);
         userEntity.setName("name");
         userEntity.setMobile("13812341234");

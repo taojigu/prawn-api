@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.prawn.dao.PrawnFavoriteMapper">
+    <resultMap id="BaseResultMap" type="ltd.prawn.entity.PrawnFavoriteEntity">
+        <id column="favorite_id" jdbcType="BIGINT" property="favoriteId"/>
+        <result column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="locked_flag" jdbcType="TINYINT" property="lockedFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        favorite_id,product_id,user_id,is_deleted, locked_flag, create_time,update_time
+    </sql>
+
+    <insert id="insert" parameterType="ltd.prawn.entity.PrawnFavoriteEntity">
+        insert into tb_prawn_favorite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="lockedFlag != null">
+                locked_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="lockedFlag != null">
+                #{lockedFlag,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+
+    </insert>
+
+
+    <select id="selectByProductIdAndUserId"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_prawn_favorite
+        where product_id = #{productId,jdbcType=BIGINT} and user_id=#{userId,jdbcType=BIGINT} and  is_deleted=0
+    </select>
+
+    <select id="selectFavoritePage" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_prawn_favorite
+        where user_id=#{userId,jdbcType=BIGINT} and  is_deleted=0
+        order by update_time desc
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+
+    </select>
+
+    <select id="getTotalFavoriteCountByUserId" resultType="int">
+        select count(*)
+        from tb_prawn_favorite
+        where user_id=#{userId,jdbcType=BIGINT} and  is_deleted=0
+    </select>
+
+    <update id="updateFavorite" parameterType="ltd.prawn.entity.PrawnFavoriteEntity">
+        update tb_prawn_favorite
+        set
+            product_id = #{userId,jdbcType=BIGINT},
+            user_id = #{userId,jdbcType=BIGINT},
+            is_deleted = #{isDeleted,jdbcType=TINYINT},
+            locked_flag = #{lockedFlag,jdbcType=TINYINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = now()
+        where favorite_id = #{favoriteId,jdbcType=BIGINT}
+    </update>
+
+
+</mapper>

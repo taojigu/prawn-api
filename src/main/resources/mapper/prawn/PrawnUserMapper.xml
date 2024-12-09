@@ -8,6 +8,8 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="employee_no" jdbcType="VARCHAR" property="employeeNo"/>
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="email" jdbcType="VARCHAR" property="mobile"/>
+        <result column="avatar" jdbcType="VARCHAR" property="mobile"/>
         <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
         <result column="locked_flag" jdbcType="TINYINT" property="lockedFlag"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -16,9 +18,16 @@
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
     </resultMap>
     <sql id="Base_Column_List">
-        user_id, open_id, name, employee_no, mobile, is_deleted,
+        user_id, open_id, name, employee_no, mobile,email,avatar, is_deleted,
         locked_flag, create_time,platform,org_id,org_name
     </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_prawn_user
+        where user_id = #{userId,jdbcType=BIGINT} and is_deleted=0
+    </select>
 
     <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -28,11 +37,11 @@
     </select>
 
     <insert id="insert" parameterType="ltd.prawn.entity.PrawnUserEntity">
-        insert into tb_prawn_user (user_id, open_id, name, employee_no, mobile, is_deleted,
+        insert into tb_prawn_user (open_id, name, employee_no, mobile,email,avatar, is_deleted,
         locked_flag, create_time,platform,org_id,org_name
         )
-        values (#{userId,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-        #{employeeNo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+        values (#{openId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+        #{employeeNo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{avatar,jdbcType=VARCHAR},
         #{isDeleted,jdbcType=TINYINT}, #{lockedFlag,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
         #{platform,jdbcType=TINYINT},#{orgId,jdbcType=BIGINT},#{orgName,jdbcType=VARCHAR}
         )

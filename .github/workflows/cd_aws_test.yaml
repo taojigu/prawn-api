@@ -6,10 +6,10 @@
 #    types:
 #      - completed
 
-name: ci-docker-and-cd-aws
+name: direct-to-ec2
 on:
   pull_request:
-    types: [labeled]
+    types: [ labeled ]
     branch:
       - 'develop*'
 jobs:
@@ -17,11 +17,20 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_run_jobs: ${{ github.event.label.name == 'cd to aws test'}} # && github.event.pull_request.merged == true }}
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.API_TEST_AWS_ACCEESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.API_TEST_AWS_ACCESS_SECRET_KEY }}
     steps:
       - name: Check if jobs should run
         run: echo "Evaluated conditions ..."
 
-  ci-develop-docker:
+      - name: Config AWS
+        run: |
+          echo "Using AWS credentials"
+          echo $AWS_ACCESS_KEY_ID
+          echo $AWS_SECRET_ACCESS_KEY
+
+  scp-to-ec2:
     needs: setup
     if: needs.setup.outputs.should_run_jobs == 'true'
     runs-on: ubuntu-latest
@@ -30,36 +39,31 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '8'
+          java-version: '17'
           distribution: 'temurin'
           cache: maven
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn clean package -DskipTests --file pom.xml
 
-      - name: Build and Push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v6
+      - name: Copy files to EC2
+        uses: appleboy/scp-action@v0.1.7
         with:
-          image: jitao1102/prawn-api
-          tags: latest
-          registry: docker.io
-          username: ${{secrets.DOCKER_USERNAME}}
-          password: ${{secrets.DOCKER_TOKEN}}
-  cd-aws-test:
-    # This will run only if the target branch matches "develop-1.0.0" pattern
-    needs: [setup,ci-develop-docker]
-    if: needs.setup.outputs.should_run_jobs == 'true'
-    runs-on: self-hosted
-    steps:
-      - name: Log messages
-        run: echo "it is run"
-      - name: Remove old docker container and images
-        run: |
-          docker ps -a --filter "ancestor=jitao1102/prawn-api" --format "{{.ID}}" | xargs -r docker stop && \
-          docker ps -a --filter "ancestor=jitao1102/prawn-api" --format "{{.ID}}" | xargs -r docker rm && \
-          docker images --filter "reference=jitao1102/prawn-api" --format "{{.ID}}" | xargs -r docker rmi --force
-      - name: Pull the docker image
-        run: sudo docker pull jitao1102/prawn-api:latest
-      - name: Run docker container
-        run: sudo docker run -d -p 28019:28019 jitao1102/prawn-api
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER}}
+          key: ${{ secrets.EC2_KEY}}
+          source: "target/*.jar,script/restart.sh"
+          target: "~/springboot-app/"
+
+      - name: SSH into EC2 and restart service
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER}}
+          key: ${{ secrets.EC2_KEY}}
+          script: |
+            cd ~/springboot-app
+            pkill -f java -jar
+            sh script/restart.sh dev
+
 
