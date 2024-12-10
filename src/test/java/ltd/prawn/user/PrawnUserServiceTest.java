@@ -14,7 +14,7 @@ public class PrawnUserServiceTest {
 
     @Test
     public void testGetUserInfoByID(){
-        PrawnUserEntity entity = prawnUserService.getUserInfoById(0L);
+        PrawnUserEntity entity = prawnUserService.getUserInfoById(1L);
         assert entity.getUserId() > 0;
     }
 }
