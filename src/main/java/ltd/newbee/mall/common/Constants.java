@@ -46,10 +46,6 @@ public class Constants {
 
     public final static String USER_INTRO = "随新所欲，蜂富多彩";//默认简介
 
-    public static String getImageURL(String fileName) {
-        return "http://"+ serviceDomain+":8801"+"/images/"+fileName;
-    }
-
-    public static String serviceDomain = "119.45.213.124";
+    public final static String FAKE_USER_TOKEN = "123456";
 
 }

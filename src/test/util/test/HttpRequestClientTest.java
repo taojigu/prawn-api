@@ -1,6 +1,6 @@
 package test;
 
-import ltd.newbee.mall.NewBeeMallAPIApplication;
+import ltd.NewBeeMallAPIApplication;
 import ltd.newbee.mall.api.mall.vo.NewBeeMallIndexCategoryVO;
 import ltd.newbee.mall.util.Result;
 import org.junit.jupiter.api.BeforeEach;
