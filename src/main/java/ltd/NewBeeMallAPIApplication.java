@@ -6,7 +6,7 @@
  * Copyright (c) 2019-2021 十三 all rights reserved.
  * 版权所有，侵权必究！
  */
-package ltd.newbee.mall;
+package ltd;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +20,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @MapperScan("ltd.newbee.mall.dao")
 @MapperScan("ltd.prawn.dao")
-@SpringBootApplication
+@SpringBootApplication()
 public class NewBeeMallAPIApplication {
 
     public static void main(String[] args) {
