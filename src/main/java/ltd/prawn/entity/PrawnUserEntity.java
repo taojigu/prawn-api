@@ -1,7 +1,7 @@
 package ltd.prawn.entity;
-
-
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.github.javafaker.Faker;
 import lombok.Data;
 import ltd.prawn.common.PrawnPlatformEnum;
 
@@ -45,6 +45,23 @@ public class PrawnUserEntity {
         this.isDeleted = 0;
         this.lockedFlag = 0;
         this.createTime = new Date();
+    }
+
+    static public PrawnUserEntity fakeEntity (){
+        Faker faker = Faker.instance();
+        PrawnUserEntity pe = new PrawnUserEntity();
+        pe.setOpenId(faker.idNumber().ssnValid());
+        pe.setName(faker.name().fullName());
+        pe.setEmail(faker.internet().emailAddress());
+        pe.setMobile(faker.phoneNumber().cellPhone());
+        pe.setAvatar(pe.getAvatar());
+        pe.setOrgId(-1);
+        pe.setPlatform(PrawnPlatformEnum.FakePlatform.getPlatformType());
+        pe.setOrgName("FakeCompany");
+        String employeeId = "Emp"+UUID.randomUUID().toString();
+        pe.setEmployeeNo(employeeId);
+        pe.setAvatar(faker.avatar().image());
+        return pe;
     }
 
     static public PrawnUserEntity fromDingDingUser(Map<String,Object> dingUserMap){

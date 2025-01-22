@@ -2,6 +2,7 @@ package ltd.prawn.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
 import ltd.prawn.api.vo.PrawnUserVO;
@@ -30,8 +31,9 @@ public class PrawnUserAPI {
             return ResultGenerator.genFailResult("No User Info");
         }
         PrawnUserVO vo = new PrawnUserVO();
-        vo.setUserName(entity.getName());
-        vo.setOrgName(entity.getOrgName());
+        BeanUtil.copyProperties(entity,vo);
+//        vo.setUserName(entity.getName());
+//        vo.setOrgName(entity.getOrgName());
         return ResultGenerator.genSuccessResult(vo);
     }
 

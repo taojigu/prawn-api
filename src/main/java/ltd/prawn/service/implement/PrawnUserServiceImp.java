@@ -10,11 +10,21 @@ import org.springframework.stereotype.Service;
 public class PrawnUserServiceImp implements PrawnUserService {
     @Autowired
     PrawnUserMapper userMapper;
-
     @Override
     public PrawnUserEntity getUserInfoById(Long userID) {
         assert userID > 0;
         PrawnUserEntity entity = userMapper.selectByPrimaryKey(userID);
         return entity;
     }
+
+    @Override
+    public int insertUser(PrawnUserEntity pe) {
+        assert !pe.getName().isEmpty();
+        int result = userMapper.insert(pe);
+        return result;
+    }
+
+
+
+
 }

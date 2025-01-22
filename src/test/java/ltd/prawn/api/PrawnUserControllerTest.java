@@ -23,7 +23,9 @@ public class PrawnUserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("token", Constants.FAKE_USER_TOKEN))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data.userName").isNotEmpty());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.avatar").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name").isNotEmpty());
     }
+
 
 }
