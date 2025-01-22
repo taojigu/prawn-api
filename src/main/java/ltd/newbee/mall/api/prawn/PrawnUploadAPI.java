@@ -10,10 +10,7 @@ import ltd.prawn.entity.PrawnUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -34,7 +31,8 @@ public class PrawnUploadAPI {
     @Autowired
     private StandardServletMultipartResolver standardServletMultipartResolver;
 
-    @RequestMapping(value = "prawn/aws/upload/image", method = RequestMethod.POST)
+    //@RequestMapping(value = "/prawn/aws/upload/image", method = RequestMethod.POST)
+    @PostMapping("/prawn/aws/upload/image")
     @ApiOperation(value = "AWS单图上传", notes = "file Name \"file\"")
     public Result awsUploadImage(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file, @TokenToPrawnUser PrawnUserEntity prawnUserEntity) throws URISyntaxException, IOException{
         if (file.isEmpty()) {
