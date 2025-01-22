@@ -21,4 +21,5 @@ java -Dspring.profiles.active=dev -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar
 ## Bucket
 AWS AccessKey:AKIA2CUNLGJWABMRJ3FQ
 Secret AccessKey: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
+ ~/.aws/credentials
 
