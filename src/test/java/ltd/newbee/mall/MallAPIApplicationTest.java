@@ -3,8 +3,13 @@ package ltd.newbee.mall;
 import ltd.newbee.mall.api.mall.NewBeeMallGoodsCategoryAPI;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
+//@SpringBootApplication(scanBasePackages = "ltd")
+//@SpringBootApplication
 @SpringBootTest
 public class MallAPIApplicationTest {
 

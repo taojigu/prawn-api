@@ -8,8 +8,8 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="employee_no" jdbcType="VARCHAR" property="employeeNo"/>
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
-        <result column="email" jdbcType="VARCHAR" property="mobile"/>
-        <result column="avatar" jdbcType="VARCHAR" property="mobile"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
         <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
         <result column="locked_flag" jdbcType="TINYINT" property="lockedFlag"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>

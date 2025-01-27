@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.config.handler;
 
+import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.service.PrawnUserTokenService;
 import ltd.newbee.mall.util.EnvironmentJudge;
 import ltd.prawn.config.annotation.TokenToPrawnUser;
@@ -85,7 +86,7 @@ public class TokenToPrawnUserMethodArgumentResolver implements HandlerMethodArgu
                 || token.equalsIgnoreCase("null") ;
     }
     private boolean isFakeToken(String token) {
-        return token.equalsIgnoreCase("123456") ;
+        return token.equalsIgnoreCase(Constants.FAKE_USER_TOKEN) ;
     }
     private Long fakeUserIdFromInvalidateToken(String token) {
         if(this.isFakeToken(token)){
