@@ -24,7 +24,7 @@ public class PrawnUserControllerTest {
 
     @Test
     public void testGetUser() throws  Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/ltd/api/v1/prawn/user")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/prawn/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("token", Constants.FAKE_USER_TOKEN))
                 .andExpect(MockMvcResultMatchers.status().isOk())

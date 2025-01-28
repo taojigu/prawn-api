@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 
 @RestController
 @Api(value = "prawn", tags = "用户界面相关接口")
-@RequestMapping("/ltd/api/v1/prawn")
+@RequestMapping("/api/v1/prawn")
 public class PrawnUserAPI {
 
     @Resource
