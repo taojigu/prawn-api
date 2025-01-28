@@ -86,7 +86,8 @@ public class TokenToPrawnUserMethodArgumentResolver implements HandlerMethodArgu
                 || token.equalsIgnoreCase("null") ;
     }
     private boolean isFakeToken(String token) {
-        return token.equalsIgnoreCase(Constants.FAKE_USER_TOKEN) ;
+
+        return StringUtils.hasLength(token) && token.equalsIgnoreCase(Constants.FAKE_USER_TOKEN) ;
     }
     private Long fakeUserIdFromInvalidateToken(String token) {
         if(this.isFakeToken(token)){

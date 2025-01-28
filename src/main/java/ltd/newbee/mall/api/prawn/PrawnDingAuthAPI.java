@@ -37,7 +37,7 @@ public class PrawnDingAuthAPI {
     private  String webBaseUrl;
 
     @GetMapping("prawn/ding/auth/signature")
-    public Result getDingAuthSignature(@TokenToPrawnUser PrawnUserEntity loginMallUser) throws Exception {
+    public Result getDingAuthSignature() throws Exception {
         String token = this.requestDingToken();
         String noncestr= StringUtil.getRandomString(8);
         String ticket= this.requestDingTicket(token);
@@ -64,7 +64,7 @@ public class PrawnDingAuthAPI {
     public Result<String> getTokenFromDing(@RequestParam("code") String code) throws Exception {
         // 请求DingToken
         String dingToken = requestDingToken();
-        if (StringUtils.isEmpty(dingToken)){
+        if (!StringUtils.hasLength(dingToken)){
             return ResultGenerator.genFailResult("请求钉钉 Token 失败");
         }
         // 请求UserId
