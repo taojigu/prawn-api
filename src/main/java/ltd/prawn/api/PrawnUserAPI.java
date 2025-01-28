@@ -32,8 +32,6 @@ public class PrawnUserAPI {
         }
         PrawnUserVO vo = new PrawnUserVO();
         BeanUtil.copyProperties(entity,vo);
-//        vo.setUserName(entity.getName());
-//        vo.setOrgName(entity.getOrgName());
         return ResultGenerator.genSuccessResult(vo);
     }
 

@@ -1,6 +1,8 @@
 package ltd.prawn.api;
 
 import ltd.newbee.mall.common.Constants;
+import ltd.newbee.mall.service.impl.PrawnUserTokenServiceImpl;
+import ltd.prawn.entity.PrawnUserTokenEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +18,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class PrawnUserControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private PrawnUserTokenServiceImpl userTokenService;
 
     @Test
     public void testGetUser() throws  Exception {
