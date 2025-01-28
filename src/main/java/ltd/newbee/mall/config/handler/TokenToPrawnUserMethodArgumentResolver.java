@@ -53,7 +53,7 @@ public class TokenToPrawnUserMethodArgumentResolver implements HandlerMethodArgu
         if (parameter.getParameterAnnotation(TokenToPrawnUser.class) instanceof TokenToPrawnUser) {
             String token = webRequest.getHeader("token");
             if ( environmentJudge.isDev() &&
-             (this.isFakeToken(token) ||this.isUndefinedToken(token))) {
+             this.isFakeToken(token)) {
                 Long userId = this.fakeUserIdFromInvalidateToken(token);
                 return this.userMapper.selectByPrimaryKey(userId);
             }
