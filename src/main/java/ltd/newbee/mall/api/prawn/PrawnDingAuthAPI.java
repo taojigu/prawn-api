@@ -37,7 +37,7 @@ public class PrawnDingAuthAPI {
     private  String webBaseUrl;
 
     @GetMapping("prawn/ding/auth/signature")
-    public Result getDingAuthSignature(@TokenToPrawnUser PrawnUserEntity loginMallUser) throws Exception {
+    public Result getDingAuthSignature() throws Exception {
         String token = this.requestDingToken();
         String noncestr= StringUtil.getRandomString(8);
         String ticket= this.requestDingTicket(token);
@@ -64,14 +64,14 @@ public class PrawnDingAuthAPI {
     public Result<String> getTokenFromDing(@RequestParam("code") String code) throws Exception {
         // 请求DingToken
         String dingToken = requestDingToken();
-        if (StringUtils.isEmpty(dingToken)){
+        if (!StringUtils.hasLength(dingToken)){
             return ResultGenerator.genFailResult("请求钉钉 Token 失败");
         }
         // 请求UserId
         Map<String,Object> userInfo = requestDingUserInfo(dingToken,code);
-        String unionId = userInfo.get("unionid").toString();
+        String openId = userInfo.get("unionid").toString();
         String dingUserId = userInfo.get("userid").toString();
-        PrawnUserEntity userEntity = this.userMapper.selectByOpenId(unionId);
+        PrawnUserEntity userEntity = this.userMapper.selectByOpenId(openId);
         if ( null == userEntity){
             Map<String,Object> dingUserMap = requestDingUserDetail(dingToken,dingUserId);
             if (null == dingUserMap){
@@ -79,7 +79,7 @@ public class PrawnDingAuthAPI {
             }
             insertUserInfoPrawn(dingUserMap);
         } 
-        String prawnToken = this.userTokenService.generateNewToken(unionId);
+        String prawnToken = this.userTokenService.generateNewToken(openId);
         if (StringUtils.isEmpty(prawnToken)){
             return ResultGenerator.genFailResult("登录钉钉失败");
         }
